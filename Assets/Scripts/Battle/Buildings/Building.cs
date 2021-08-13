@@ -1,4 +1,7 @@
-﻿public class Building : IBuildable
+﻿namespace Battle.Buildings
 {
-    
+    public class Building : IBuildable
+    {
+
+    }
 }

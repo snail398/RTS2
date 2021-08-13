@@ -1,24 +1,32 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class Grid
+namespace Grid
 {
-    private int _Width;
-    private int _Height;
-    private GridCell[,] _Cells;
-
-    public Grid(int width, int height)
+    public class Grid<T>
     {
-        _Width = width;
-        _Height = height;
+        private readonly int _Width;
+        private readonly int _Height;
+        private readonly Vector2Int _Origin;
+        private readonly GridCell<T>[,] _Cells;
 
-        _Cells = new GridCell[_Width, _Height];
-        for (var i = 0; i < _Width; i++)
+        public int Width => _Width;
+        public int Height => _Height;
+
+        public Vector2Int Origin => _Origin;
+
+        public Grid(int width, int height, Vector2Int origin)
         {
-            for (var j = 0; j < _Height; j++)
+            _Width = width;
+            _Height = height;
+            _Origin = origin;
+            
+            _Cells = new GridCell<T>[_Width, _Height];
+            for (var i = 0; i < _Width; i++)
             {
-                _Cells[i, j] = new GridCell(i, j);
+                for (var j = 0; j < _Height; j++)
+                {
+                    _Cells[i, j] = new GridCell<T>(i, j);
+                }
             }
         }
     }

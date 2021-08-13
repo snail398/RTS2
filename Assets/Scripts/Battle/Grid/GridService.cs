@@ -1,22 +1,26 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Battle.Buildings;
 using UnityEngine;
 using Zenject;
 
-public class GridService : IInitializable, IDisposable, IDataProvider<Grid>
+namespace Grid
 {
-    private Grid _Grid;
-    public Grid Data => _Grid;
-
-    public void Initialize()
+    public class GridService : IInitializable, IDisposable, IDataProvider<Grid<IBuildable>>
     {
-        _Grid = new Grid(5, 5);
-    }
+        private Grid<IBuildable> _BuildingsGrid;
+        public Grid<IBuildable> Data => _BuildingsGrid;
 
-    public void Dispose()
-    {
-    
-    }
+        public void Initialize()
+        {
+            _BuildingsGrid = new Grid<IBuildable>(10, 10, Vector2Int.zero);
+        }
 
+        public void Dispose()
+        {
+
+        }
+
+    }
 }

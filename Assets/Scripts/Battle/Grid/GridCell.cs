@@ -1,22 +1,21 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class GridCell
+﻿namespace Grid
 {
-    private IBuildable _Building;
-    private int _X;
-    private int _Y;
-
-    public GridCell(int x, int y)
+    public class GridCell<T>
     {
-        _X = x;
-        _Y = y;
-        _Building = null;
-    }
+        private T _CellData;
+        private int _X;
+        private int _Y;
 
-    public void PlaceBuilding(IBuildable building)
-    {
-        _Building = building;
+        public GridCell(int x, int y)
+        {
+            _X = x;
+            _Y = y;
+            _CellData = default;
+        }
+
+        public void Place(T data)
+        {
+            _CellData = data;
+        }
     }
 }
