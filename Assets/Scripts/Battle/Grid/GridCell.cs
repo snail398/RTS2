@@ -1,6 +1,6 @@
-﻿namespace Grid
+﻿namespace GridNamesapace
 {
-    public class GridCell<T>
+    public class GridCell<T> where T : class
     {
         private T _CellData;
         private int _X;
@@ -17,5 +17,7 @@
         {
             _CellData = data;
         }
+
+        public bool IsUsed => _CellData != null;
     }
 }

@@ -9,9 +9,9 @@ public class UIState
     }
 }
 
-public class LoginState : UIState
+public class BuildingState : UIState
 {
-    public LoginState(Type[] panels) : base(panels) { }
+    public BuildingState(Type[] panels) : base(panels) { }
 }
 
 public class SelectionState : UIState

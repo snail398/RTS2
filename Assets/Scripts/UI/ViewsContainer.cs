@@ -21,5 +21,13 @@ namespace UI
                 Debug.LogError($"Can't find view {typeof(T)} in views container {GetType()}");
             return view;
         }
+        
+        public List<T> GetViews<T>()
+        {
+            var views = _Views.OfType<T>().ToList();
+            if (views == null || views.Count == 0)
+                Debug.LogError($"Can't find view {typeof(T)} in views container {GetType()}");
+            return views;
+        }
     }
 }

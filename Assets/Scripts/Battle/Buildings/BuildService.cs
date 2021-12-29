@@ -1,7 +1,8 @@
 ﻿using System;
 using Battle.Actions;
-using Common;
-using Grid;
+using GameObjectView;
+using GridNamesapace;
+using Settings;
 using UnityEngine;
 using Utils;
 using Zenject;
@@ -11,43 +12,80 @@ namespace Battle.Buildings
 {
     public class BuildService : IInitializable, IDisposable
     {
-        private readonly UnityEventProvider _UnityEventProvider;
         private readonly IDataProvider<Grid<IBuildable>> _GridProvider;
         private readonly ResourceLoaderService _ResourceLoaderService;
+        private readonly SignalBus _SignalBus;
+        private readonly BuildingFactory _BuildingFactory;
 
-        public BuildService(UnityEventProvider unityEventProvider, IDataProvider<Grid<IBuildable>> gridProvider, ResourceLoaderService resourceLoaderService)
+        public BuildService(IDataProvider<Grid<IBuildable>> gridProvider, ResourceLoaderService resourceLoaderService, SignalBus signalBus, BuildingFactory buildingFactory)
         {
-            _UnityEventProvider = unityEventProvider;
             _GridProvider = gridProvider;
             _ResourceLoaderService = resourceLoaderService;
+            _SignalBus = signalBus;
+            _BuildingFactory = buildingFactory;
         }
 
-        public void Initialize()
+        void IInitializable.Initialize() { }
+
+        public void TryMouseBuild(BuildingConfig buildingConfig, Vector3 mousePosition)
         {
-            _UnityEventProvider.OnUpdate += Update;
+            if (mousePosition.x < 0 || mousePosition.z < 0 || mousePosition.x > _GridProvider.Data.Width - 1 || mousePosition.z > _GridProvider.Data.Height)
+                return;
+            var baseTilePos = GridUtils.GetXY(_GridProvider.Data, mousePosition);
+            if (!CanBuildHere(buildingConfig.Width, buildingConfig.Height, baseTilePos))
+                return;
+            var action = new BuildAction(buildingConfig.Name, baseTilePos.x, baseTilePos.y, buildingConfig.Width, buildingConfig.Height, 0);
+            BuildProcess(action);
         }
 
-        private void Update()
+        public void TryDirectBuild(BuildingConfig buildingConfig, Vector2Int gridPosition, byte playerId)
         {
-            if (Input.GetMouseButtonUp(0))
+            if (!CanBuildHere(buildingConfig.Width, buildingConfig.Height, gridPosition))
+                return;
+            var action = new BuildAction(buildingConfig.Name, gridPosition.x, gridPosition.y, buildingConfig.Width, buildingConfig.Height, playerId);
+            BuildProcess(action);
+        }
+
+        private bool CanBuildHere(int width, int height, Vector2Int baseTilePos)
+        {
+            var emptyCellCount = width * height;
+            for (int i = baseTilePos.x; i < baseTilePos.x + width; i++)
             {
-                //fire build action
-                var clickPos = MouseUtils.GetMouseWorldPosititon(LayerMask.GetMask("Ground"));
-                var gridPos = GridUtils.GetXY(_GridProvider.Data, clickPos);
-                var action = new BuildAction("CommandCenter", gridPos.x, gridPos.y);
-                Build(action);
+                for (int j = baseTilePos.y; j < baseTilePos.y + height; j++)
+                {
+                    if (!_GridProvider.Data.IsUsed(i, j))
+                        emptyCellCount--;
+                }
             }
+
+            if (emptyCellCount > 0)
+                return false;
+            return true;
         }
 
-        private void Build(BuildAction buildAction)
+
+        private void BuildProcess(BuildAction buildAction)
         {
-            var b = _ResourceLoaderService.LoadResource<GameObject>($"Prefabs/Buildings/{buildAction.BuildingName}");
-            Object.Instantiate(b, new Vector3(buildAction.X, 0.12f, buildAction.Y), Quaternion.identity);
+            var buildingViewPrefab = _ResourceLoaderService.LoadResource<BuildingView>($"Prefabs/Buildings/{buildAction.BuildingName}");
+            var buildingView = Object.Instantiate(buildingViewPrefab, new Vector3(buildAction.X, 0.12f, buildAction.Y), Quaternion.identity);
+            var building = _BuildingFactory.CreateBuilding(buildingView.BuildingType);
+            if (building == null)
+            {
+                Debug.LogError($"error on creating building {buildingView.BuildingType}");
+                return;
+            }
+            building.Initialize(buildingView, buildAction.PlayerId, buildAction.Width, buildAction.Height);
+            
+            for (int i = buildAction.X; i < buildAction.X + buildAction.Width; i++)
+            {
+                for (int j = buildAction.Y; j < buildAction.Y + buildAction.Height; j++)
+                {
+                    _GridProvider.Data.Place(i, j, building);
+                }
+            }
+            _SignalBus.FireSignal(new BuildingCreatedSignal(building, buildAction.PlayerId));
         }
         
-        public void Dispose()
-        {
-            _UnityEventProvider.OnUpdate -= Update;
-        }
+        void IDisposable.Dispose() { }
     }
 }

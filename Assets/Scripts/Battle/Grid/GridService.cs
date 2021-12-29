@@ -1,23 +1,33 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using Battle.Buildings;
+using GameObjectView;
 using UnityEngine;
 using Zenject;
 
-namespace Grid
+namespace GridNamesapace
 {
     public class GridService : IInitializable, IDisposable, IDataProvider<Grid<IBuildable>>
     {
+        private readonly MapView _MapView;
         private Grid<IBuildable> _BuildingsGrid;
-        public Grid<IBuildable> Data => _BuildingsGrid;
+        Grid<IBuildable> IDataProvider<Grid<IBuildable>>.Data => _BuildingsGrid;
 
-        public void Initialize()
+        public GridService(MapView mapView)
         {
-            _BuildingsGrid = new Grid<IBuildable>(10, 10, Vector2Int.zero);
+            _MapView = mapView;
         }
 
-        public void Dispose()
+        void IInitializable.Initialize()
+        {
+            _BuildingsGrid = new Grid<IBuildable>(60, 20, Vector2Int.zero);
+            var impassableCellBuilding = new ImpassableCellBuilding();
+            foreach (var cell in _MapView.ImpassibleCells.Cells)
+            {
+                _BuildingsGrid.Place(cell.x, cell.y, impassableCellBuilding);
+            }
+        }
+
+        void IDisposable.Dispose()
         {
 
         }

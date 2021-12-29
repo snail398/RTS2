@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
-namespace Grid
+namespace GridNamesapace
 {
-    public class Grid<T>
+    public class Grid<T> where T : class
     {
         private readonly int _Width;
         private readonly int _Height;
@@ -28,6 +28,16 @@ namespace Grid
                     _Cells[i, j] = new GridCell<T>(i, j);
                 }
             }
+        }
+
+        public void Place(int x, int y, T data)
+        {
+            _Cells[x, y].Place(data);
+        }
+        
+        public bool IsUsed(int x, int y)
+        {
+            return _Cells[x, y].IsUsed;
         }
     }
 }

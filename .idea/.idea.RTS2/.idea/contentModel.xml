@@ -369,15 +369,60 @@
             <e p="Buildings" t="Include">
               <e p="BuidingConfig.cs" t="Include" />
               <e p="Building.cs" t="Include" />
+              <e p="BuildingInst" t="Include">
+                <e p="Barrack.cs" t="Include" />
+                <e p="CommandCenter.cs" t="Include" />
+              </e>
+              <e p="BuildingType.cs" t="Include" />
               <e p="BuildService.cs" t="Include" />
+              <e p="BuildUIService.cs" t="Include" />
+              <e p="DragService.cs" t="Include" />
+              <e p="Factories" t="Include">
+                <e p="BarrackFactory.cs" t="Include" />
+                <e p="BuildingFactory.cs" t="Include" />
+                <e p="BuildingFactoryBase.cs" t="Include" />
+                <e p="CommandCenterFactory.cs" t="Include" />
+                <e p="IBuildingFactory.cs" t="Include" />
+              </e>
               <e p="IBuildable.cs" t="Include" />
+              <e p="PlayersBuildingsService.cs" t="Include" />
+              <e p="Signals" t="Include">
+                <e p="BuildingCreatedSignal.cs" t="Include" />
+                <e p="DragProcessSignal.cs" t="Include" />
+              </e>
             </e>
+            <e p="ClickService.cs" t="Include" />
             <e p="GameInstaller.cs" t="Include" />
+            <e p="GameStart" t="Include">
+              <e p="GameStartedSignal.cs" t="Include" />
+              <e p="GameStartService.cs" t="Include" />
+            </e>
             <e p="Grid" t="Include">
+              <e p="DefaultBases.cs" t="Include" />
               <e p="Grid.cs" t="Include" />
               <e p="GridCell.cs" t="Include" />
               <e p="GridService.cs" t="Include" />
               <e p="GridVisualizationService.cs" t="Include" />
+              <e p="ImpassableCellBuilding.cs" t="Include" />
+              <e p="impassableCells.cs" t="Include" />
+            </e>
+            <e p="Minerals" t="Include">
+              <e p="Mineral.cs" t="Include" />
+              <e p="MineralFactory.cs" t="Include" />
+              <e p="MineralsService.cs" t="Include" />
+            </e>
+            <e p="Player" t="Include">
+              <e p="ISelectable.cs" t="Include" />
+              <e p="Player.cs" t="Include" />
+              <e p="PlayerCreatedSignal.cs" t="Include" />
+              <e p="PlayerSelectService.cs" t="Include" />
+              <e p="PlayerService.cs" t="Include" />
+            </e>
+            <e p="Resources" t="Include">
+              <e p="ResourcesWalletService.cs" t="Include" />
+              <e p="ResourceType.cs" t="Include" />
+              <e p="ResourceWallet.cs" t="Include" />
+              <e p="WalletUiService.cs" t="Include" />
             </e>
           </e>
           <e p="Common" t="Include">
@@ -393,28 +438,49 @@
             <e p="SignalBus" t="Include">
               <e p="ISignal.cs" t="Include" />
               <e p="SignalBus.cs" t="Include" />
+              <e p="SignalSubscription.cs" t="Include" />
+              <e p="SignalSubscriptionWrapper.cs" t="Include" />
             </e>
             <e p="UnityEventProvider.cs" t="Include" />
           </e>
           <e p="GameObjectView" t="Include">
+            <e p="BasePlaceView.cs" t="Include" />
+            <e p="Buildings" t="Include">
+              <e p="CommandCenterView.cs" t="Include" />
+            </e>
+            <e p="BuildingView.cs" t="Include" />
             <e p="GameObjectView.cs" t="Include" />
+            <e p="IClickable.cs" t="Include" />
+            <e p="MapView.cs" t="Include" />
+            <e p="MineralView.cs" t="Include" />
+            <e p="MineralZoneView.cs" t="Include" />
+            <e p="SelectView.cs" t="Include" />
             <e p="TileView.cs" t="Include" />
           </e>
           <e p="Settings" t="Include">
+            <e p="BuildingsConfig.cs" t="Include" />
             <e p="ISettings.cs" t="Include" />
             <e p="LevelExpSettings.cs" t="Include" />
           </e>
           <e p="UI" t="Include">
+            <e p="BattleUIPanelService.cs" t="Include" />
             <e p="Panels" t="Include">
               <e p="BuildingsPanel.cs" t="Include" />
               <e p="Panel.cs" t="Include" />
+              <e p="WalletPanel.cs" t="Include" />
             </e>
             <e p="PanelsContainer.cs" t="Include" />
             <e p="UIPanelService.cs" t="Include" />
             <e p="UIService.cs" t="Include" />
             <e p="UIState.cs" t="Include" />
             <e p="View" t="Include">
-              <e p="BuildingButtonView.cs" t="Include" />
+              <e p="BuildButtonView.cs" t="Include" />
+              <e p="Click.cs" t="Include" />
+              <e p="DoubleClick.cs" t="Include" />
+              <e p="DragExitHandler.cs" t="Include" />
+              <e p="LongClick.cs" t="Include" />
+              <e p="PlayerResourceWalletView.cs" t="Include" />
+              <e p="ResourceView.cs" t="Include" />
             </e>
             <e p="View.cs" t="Include" />
             <e p="ViewsContainer.cs" t="Include" />
